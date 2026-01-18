@@ -1,4 +1,4 @@
 .git
-notes-security/raw-stuff/
-ctf/misc/
+notes-security/raw-stuff/*
+ctf/misc/*
 tools/
