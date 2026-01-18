@@ -1,0 +1,19 @@
+atomic red teams
+
+https://www.atomicredteam.io/invoke-atomicredteam/docs
+ > pwsh
+ > Install-Module -Name invoke-atomicredteam,powershell-yaml -Scope CurrentUser
+ > Register-PSRepository -Default
+
+sudo apt install sysmonforlinux
+
+================
+
+Invoke-AtomicTest T1059.003 -ShowDetails
+Invoke-AtomicTest T1059.003 -TestNumbers 4
+
+
+
+
+https://attack.mitre.org/techniques/T1566/001/
+https://attack.mitre.org/techniques/T1059/004/

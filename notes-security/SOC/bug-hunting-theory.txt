@@ -1,0 +1,15 @@
+
+Junior Security Analyst (L1) >> Senior Security Analyst >> SOC Engineer >> SOC Manager >> Incident Responder
+
+A blue team comprises cyber security and technology professionals whose aim is to protect an information system from impending cyber threats by performing and implementing defensive actions.
+
+---------------------------------------------------------------------------
+L1 Analysts: Junior members who triage alerts and pass complex cases to L2
+L2 Analysts: Experienced members who investigate more advanced attacks
+Engineers: Experts in configuring security tools like EDR or SIEM
+Manager: A person who manages the whole SOC team
+---------------------------------------------------------------------------
+
+
+
+

@@ -1,0 +1,4 @@
+# Nmap 7.94SVN scan initiated Sun Jan 18 13:20:59 2026 as: nmap -p- --min-rate 10000 -v -oN all-ports 10.10.11.83
+Nmap scan report for 10.10.11.83 [host down]
+Read data files from: /usr/bin/../share/nmap
+# Nmap done at Sun Jan 18 13:21:01 2026 -- 1 IP address (0 hosts up) scanned in 2.03 seconds

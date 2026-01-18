@@ -1,0 +1,27 @@
+Management Group => 
+
+Address Space:
+==============
+RFC1918
+- 10/8
+- 172.16/12
+- 192.168/16
+
+Reserved:
+x.x.x.0     - Network address
+x.x.x.1     - Reserved by Azure for default gateway
+x.x.x.2,3   - Reserved by azure to map the azure DNS ips to Vnet Space
+x.x.x.255   - Network broadcast
+
+Unavailable address range:
+---------------------------
+- 224.0.0.0/4           multicast
+- 255.255.255.255/32    broadcast
+- 127.0.0.0/8           Loopback
+- 169.254.0.0/16        Link-Local
+- 168.63.129.16/32      Internal DNS
+=========================
+- 10.10.0.0/19  (10.10.0.0 - 10.10.31.255)
+
+in-rg01-vnet01:
+    10.10.0.0/24  ( 10.10.0.0 - 10.10.0.255 )

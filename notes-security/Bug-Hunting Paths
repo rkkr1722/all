@@ -1,0 +1,41 @@
+Bug-Hunting Learning Paths
+===========================
+1) step 
+- chrome/firefox
+- Burp suite
+- TryHack me account
+- Portswigger account   - https://portswigger.net/web-security  54Z"JzM=R%8X$#WRw6d,8'K"SdwJFx3q
+
+2) Step
+    i) Http, cookie, session
+    ii) authentication & authorization
+    iii) OWASP TOP 10
+
+3) First Vulnerability to Learn
+    i) XSS
+    ii) IDOR
+    iii) Broken Access Control (BAC)
+    iv) File Upload
+    
+4) Daily Routine
+    30 MInute - theory
+    30 MInute - solve labs
+    30 MInute - Walkthrough
+Consistancy >> speed.
+------------------------------------------------
+
+# Tools
+hydra
+steghide        steghide extract -sf crew.jpg
+nmap
+
+gtfobins        https://gtfobins.github.io/
+==========
+
+File Upload Vulnerability 
+    https://www.intigriti.com/researchers/hackademy/file-upload-vulnerabilities
+    https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html
+    https://www.youtube.com/watch?v=QHhn0-ermck
+
+Reverse Shell:          
+    https://swisskyrepo.github.io/InternalAllTheThings/cheatsheets/shell-reverse-cheatsheet/#perl
