@@ -1,0 +1,54 @@
+{
+  "eventVersion": "1.10",
+  "userIdentity": {
+    "type": "IAMUser",
+    "principalId": "AIDAXRMKYT5O5Y2GLD4ZG",
+    "arn": "arn:aws:iam::518371450717:user/wareville_collector",
+    "accountId": "518371450717",
+    "accessKeyId": "AKIAXRMKYT5OZCZPGNZ7",
+    "userName": "wareville_collector"
+  },
+  "eventTime": "2024-10-21T22:13:24Z",
+  "eventSource": "s3.amazonaws.com",
+  "eventName": "ListObjects",
+  "awsRegion": "ap-southeast-1",
+  "sourceIPAddress": "34.247.218.56",
+  "userAgent": "[aws-sdk-go/0.24.0 (go1.22.6; linux; amd64)]",
+  "requestParameters": {
+    "bucketName": "aoc-cloudtrail-wareville",
+    "Host": "aoc-cloudtrail-wareville.s3.ap-southeast-1.amazonaws.com",
+    "prefix": ""
+  },
+  "responseElements": null,
+  "additionalEventData": {
+    "SignatureVersion": "SigV4",
+    "CipherSuite": "TLS_AES_128_GCM_SHA256",
+    "bytesTransferredIn": 0,
+    "AuthenticationMethod": "AuthHeader",
+    "x-amz-id-2": "yqniVtqBrL0jNyGlvnYeR3BvJJPlXdgxvjAwwWhTt9dLMbhgZugkhlH8H21Oo5kNLiq8vg5vLoj3BNl9LPEAqN5iHpKpZ1hVynQi7qrIDk0=",
+    "bytesTransferredOut": 236375
+  },
+  "requestID": "YKEKJP7QX32B4NZB",
+  "eventID": "fd80529f-d0af-4f44-8034-743d8d92bdcf",
+  "readOnly": true,
+  "resources": [
+    {
+      "type": "AWS::S3::Object",
+      "ARNPrefix": "arn:aws:s3:::aoc-cloudtrail-wareville/"
+    },
+    {
+      "accountId": "518371450717",
+      "type": "AWS::S3::Bucket",
+      "ARN": "arn:aws:s3:::aoc-cloudtrail-wareville"
+    }
+  ],
+  "eventType": "AwsApiCall",
+  "managementEvent": false,
+  "recipientAccountId": "518371450717",
+  "eventCategory": "Data",
+  "tlsDetails": {
+    "tlsVersion": "TLSv1.3",
+    "cipherSuite": "TLS_AES_128_GCM_SHA256",
+    "clientProvidedHostHeader": "aoc-cloudtrail-wareville.s3.ap-southeast-1.amazonaws.com"
+  }
+}

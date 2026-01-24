@@ -1,0 +1,23 @@
+FROM python:3.11-slim
+
+ENV DEBIAN_FRONTEND=noninteractive
+WORKDIR /work
+
+# System dependencies needed by binwalk / stego tools
+RUN apt-get update && apt-get install -y \
+    binwalk \
+    file \
+    imagemagick \
+    exiftool \
+    libgl1 \
+    libglib2.0-0 \
+    unzip \
+    xxd \
+    && rm -rf /var/lib/apt/lists/*
+
+# Python tooling
+RUN pip install --no-cache-dir \
+    stegoveritas \
+    pillow
+
+ENTRYPOINT ["stegoveritas"]

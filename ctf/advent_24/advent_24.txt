@@ -42,3 +42,6 @@ Add-Type $CrtThread
 $thandle = [CrtThread]::CreateThread(0, 0, $addr, 0, 0, 0)
 [WaitFor]::WaitForSingleObject($thandle, [uint32]"0xFFFFFFFF")
 
+
+
+jq -r '.Records[] | select(.eventSource == "s3.amazonaws.com" and .requestParameters.bucketName=="wareville-care4wares") | [.eventTime, .eventName, .userIdentity.userName // "N/A",.requestParameters.bucketName // "N/A", .requestParameters.key // "N/A", .sourceIPAddress // "N/A"]' cloudtrail_log.json
