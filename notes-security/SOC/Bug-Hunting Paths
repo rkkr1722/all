@@ -24,6 +24,10 @@ Bug-Hunting Learning Paths
 Consistancy >> speed.
 ------------------------------------------------
 
+findings
+Severity
+
+
 # Tools
 hydra
 steghide        steghide extract -sf crew.jpg

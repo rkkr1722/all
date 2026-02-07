@@ -1,0 +1,100 @@
+############################
+# Resource Groups
+############################
+#resource "azurerm_resource_group" "france" {
+  #name     = "rg-france"
+  #location = "France Central"
+#}
+
+############################
+# Networking – France
+############################
+
+resource "azurerm_virtual_network" "france_vnet" {
+  name                = "vnet-france"
+  address_space       = ["10.10.0.0/16"]
+  location            = azurerm_resource_group.france.location
+  resource_group_name = azurerm_resource_group.france.name
+}
+
+resource "azurerm_subnet" "france_subnet" {
+  name                 = "subnet-france"
+  resource_group_name  = azurerm_resource_group.france.name
+  virtual_network_name = azurerm_virtual_network.france_vnet.name
+  address_prefixes     = ["10.10.1.0/24"]
+}
+azure-terraform/2_VM--france.tf
+
+
+############################
+# NICs – France (2 VMs)
+############################
+
+resource "azurerm_network_interface" "france_nic" {
+  count               = 2
+  name                = "nic-france-${count.index}"
+  location            = azurerm_resource_group.france.location
+  resource_group_name = azurerm_resource_group.france.name
+
+  ip_configuration {
+    name                          = "internal"
+    subnet_id                     = azurerm_subnet.france_subnet.id
+    private_ip_address_allocation = "Dynamic"
+  }
+}
+
+############################
+# NSG+SSH – create
+############################
+resource "azurerm_network_security_group" "ssh_nsg" {
+  name                = "nsg-allow-ssh"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+
+  security_rule {
+    name                       = "Allow-SSH"
+    priority                   = 1001
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "22"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+}
+
+
+############################
+# VMs – France (2)
+############################
+
+resource "azurerm_linux_virtual_machine" "france_vm" {
+  count               = 2
+  name                = "vm-france-${count.index}"
+  resource_group_name = azurerm_resource_group.france.name
+  location            = azurerm_resource_group.france.location
+  size                = "Standard_B1ls"
+  admin_username      = "azureuser"
+
+  network_interface_ids = [
+    azurerm_network_interface.france_nic[count.index].id
+  ]
+
+  admin_ssh_key {
+    username   = "azureuser"
+    public_key = file("~/.ssh/id_rsa.pub")
+  }
+
+  os_disk {
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
+  }
+
+  source_image_reference {
+  publisher = "Debian"
+  offer     = "debian-12"
+  sku       = "12"
+  version   = "latest"
+  }
+}

@@ -2,3 +2,5 @@
 notes-security/raw-stuff/*
 ctf/misc/*
 tools/
+azure-terraform/.terraform*
+azure-terraform/terraform*

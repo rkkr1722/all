@@ -1,0 +1,82 @@
+############################
+# Resource Groups
+############################
+resource "azurerm_resource_group" "india" {
+  name     = "rg-south-india"
+  location = "South India"
+}
+
+############################
+# Resource Groups
+############################
+#resource "azurerm_resource_group" "india" {
+  #name     = "rg-south-india"
+  #location = "South India"
+#}
+
+
+############################
+# Networking – West India
+############################
+resource "azurerm_virtual_network" "india_vnet" {
+  name                = "vnet-india"
+  address_space       = ["10.20.0.0/16"]
+  location            = azurerm_resource_group.india.location
+  resource_group_name = azurerm_resource_group.india.name
+}
+
+resource "azurerm_subnet" "india_subnet" {
+  name                 = "subnet-india"
+  resource_group_name  = azurerm_resource_group.india.name
+  virtual_network_name = azurerm_virtual_network.india_vnet.name
+  address_prefixes     = ["10.20.1.0/24"]
+}
+
+############################
+# NIC – West India (1 VM)
+############################
+
+resource "azurerm_network_interface" "india_nic" {
+  name                = "nic-india"
+  location            = azurerm_resource_group.india.location
+  resource_group_name = azurerm_resource_group.india.name
+
+  ip_configuration {
+    name                          = "internal"
+    subnet_id                     = azurerm_subnet.india_subnet.id
+    private_ip_address_allocation = "Dynamic"
+  }
+}
+
+############################
+# VM – West India (1)
+############################
+
+resource "azurerm_linux_virtual_machine" "india_vm" {
+  name                = "vm-india"
+  resource_group_name = azurerm_resource_group.india.name
+  location            = azurerm_resource_group.india.location
+  size                = "Standard_B1ls"
+  admin_username      = "azureuser"
+
+  network_interface_ids = [
+    azurerm_network_interface.india_nic.id
+  ]
+
+  admin_ssh_key {
+    username   = "azureuser"
+    public_key = file("~/.ssh/id_rsa.pub")
+  }
+
+  os_disk {
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
+  }
+
+  source_image_reference {
+  publisher = "Debian"
+  offer     = "debian-12"
+  sku       = "12"
+  version   = "latest"
+  }
+}
