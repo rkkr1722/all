@@ -2,23 +2,47 @@ variable "admin_username" {
   default = "anon"
 }
 
+variable "admin_password" {
+  default = "S3cReT0212"
+}
+
 variable "vm_size" {
   default = "Standard_B1ls"
 }
 
-variable "vnet_address_space" {
+variable "fr_vm_count" {
+  default = 2
+}
+variable "vnet_address_space_pol" {
   default = ["10.10.0.0/16"]
 }
 
-variable "subnet_address_space" {
+variable "subnet_address_space_pol" {
   default = ["10.10.1.0/24"]
+}
+
+variable "vnet_address_space_fr" {
+  default = ["10.15.0.0/16"]
+}
+
+variable "subnet_address_space_fr" {
+  default = ["10.15.1.0/24"]
+}
+
+variable "vnet_address_space_in" {
+  default = ["10.20.0.0/16"]
+}
+
+variable "subnet_address_space_in" {
+  default = ["10.20.1.0/24"]
 }
 
 variable "regions" {
   type = map(string)
   default = {
     southindia    = "South India"
-    francecentral = "France Central"
+    france = "France Central"
+    poland = "Poland Central"
   }
 }
 

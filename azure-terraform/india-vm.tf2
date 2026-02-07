@@ -3,7 +3,7 @@
 #################
 resource "azurerm_resource_group" "south" {
   name     = "rg-southindia"
-  location = "South India"
+  location = var.regions.southindia
 }
 
 resource "azurerm_resource_group" "rg" {
@@ -18,14 +18,14 @@ resource "azurerm_virtual_network" "south" {
   name                = "vnet-southindia"
   location            = azurerm_resource_group.south.location
   resource_group_name = azurerm_resource_group.south.name
-  address_space       = var.vnet_address_space
+  address_space       = var.vnet_address_space_in
 }
 
 resource "azurerm_subnet" "south" {
   name                 = "subnet-01"
   resource_group_name  = azurerm_resource_group.south.name
   virtual_network_name = azurerm_virtual_network.south.name
-  address_prefixes     = var.subnet_address_space
+  address_prefixes     = var.subnet_address_space_in
 }
 
 ##############
@@ -64,23 +64,29 @@ resource "azurerm_linux_virtual_machine" "south_vm" {
   location            = azurerm_resource_group.south.location
   resource_group_name = azurerm_resource_group.south.name
   size                = var.vm_size
-  admin_username      = var.admin_username
   network_interface_ids = [azurerm_network_interface.south_nic.id]
 
   admin_ssh_key {
     username   = var.admin_username
     public_key = file("~/.ssh/id_rsa.pub")
   }
+  admin_username                  = var.admin_username
+  admin_password                  = var.admin_password
+  disable_password_authentication = false
 
   os_disk {
     storage_account_type = "Standard_LRS"
     caching              = "ReadWrite"
   }
 
+  lifecycle {
+  prevent_destroy = false
+  }
+
   source_image_reference {
-    publisher = "Canonical"
-    offer     = "0001-com-ubuntu-server-jammy"
-    sku       = "22_04-lts"
-    version   = "latest"
+  publisher = "Debian"
+  offer     = "debian-13"
+  sku       = "13"
+  version   = "latest"
   }
 }

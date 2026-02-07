@@ -1,6 +1,6 @@
 .git
 notes-security/raw-stuff/*
 ctf/misc/*
-tools/
+tools/*
 azure-terraform/.terraform*
 azure-terraform/terraform*

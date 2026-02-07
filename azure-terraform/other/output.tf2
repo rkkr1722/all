@@ -1,13 +1,17 @@
+output "resource_group_name" {
+  value = azurerm_resource_group.france.name
+}
+
 output "france_public_ip" {
   value = azurerm_public_ip.france_pip.ip_address
 }
 
+output "azurerm_linux_virtual_machine" {
+  value = azurerm_linux_virtual_machine.france_vm[0].name
+}
+
 #output "south_india_public_ip" {
   #value = azurerm_public_ip.south_pip.ip_address
-#}
-#
-#output "resource_group_name" {
-  #value = azurerm_resource_group.rg.name
 #}
 
 ##########################################

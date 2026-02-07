@@ -1,0 +1,6 @@
+services:
+  bloodhound:
+    image: ghcr.io/specterops/bloodhound:latest
+    container_name: bloodhound
+    ports:
+      - "3000:3000"
